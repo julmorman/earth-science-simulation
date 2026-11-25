@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Rhythm in Logarithm - Simulador Escala de Richter</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>The Rhythm in Logarithm</h1>
+      <p>Simulador Interactivo de la Escala de Richter · Earth Science & Matemática (Grupo 3)</p>
+    </header>
+
+    <div class="grid">
+      <!-- Panel de Controles -->
+      <section class="card controls">
+        <h2>1. Parámetros del Sismo</h2>
+        
+        <div class="control-group">
+          <label for="magnitude">
+            Magnitud Richter (M): <strong id="mag-val">5.0</strong>
+          </label>
+          <input type="range" id="magnitude" min="1.0" max="9.5" step="0.1" value="5.0" />
+          <div class="scale-labels">
+            <span>1.0 (Micro)</span>
+            <span>5.0 (Moderado)</span>
+            <span>9.5 (Catastrófico)</span>
+          </div>
+        </div>
+
+        <hr />
+
+        <h2>2. Análisis Matemático (Desplazamientos)</h2>
+        <p class="hint">Explorá cómo los parámetros modifican la función base <code>M(A) = log₁₀(A / A₀)</code>:</p>
+
+        <div class="control-group">
+          <label for="param-a">
+            Factor de escala vertical (a): <strong id="a-val">1.0</strong>
+          </label>
+          <input type="range" id="param-a" min="0.5" max="2.0" step="0.1" value="1.0" />
+        </div>
+
+        <div class="control-group">
+          <label for="param-h">
+            Desplazamiento horizontal / Amplitud ref. (h): <strong id="h-val">0</strong>
+          </label>
+          <input type="range" id="param-h" min="-2" max="5" step="0.5" value="0" />
+        </div>
+
+        <div class="control-group">
+          <label for="param-k">
+            Desplazamiento vertical / Corrección distancia (k): <strong id="k-val">0.0</strong>
+          </label>
+          <input type="range" id="param-k" min="-2.0" max="2.0" step="0.2" value="0.0" />
+        </div>
+
+        <button id="reset-btn">Restaurar Función Estándar</button>
+      </section>
+
+      <!-- Panel de Resultados y Gráfico -->
+      <section class="card visualization">
+        <div class="formula-box" id="formula-display">
+          M(A) = 1.0 · log₁₀(A - 0) + 0.0
+        </div>
+
+        <div class="metrics">
+          <div class="metric-box">
+            <span class="metric-title">Amplitud Relativa (A / A₀)</span>
+            <span class="metric-value" id="amp-val">100,000x</span>
+            <span class="metric-sub">10<sup>M</sup> veces el sismo base</span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-title">Energía Liberada (E)</span>
+            <span class="metric-value" id="energy-val">2.00 × 10¹² J</span>
+            <span class="metric-sub">log₁₀(E) = 4.8 + 1.5M</span>
+          </div>
+          <div class="metric-box highlight">
+            <span class="metric-title">Daño Esperado</span>
+            <span class="metric-value" id="damage-level" style="font-size: 0.95rem;">Moderado</span>
+            <span class="metric-sub" id="impact-desc">Daños considerables en estructuras débiles</span>
+          </div>
+        </div>
+
+        <!-- Panel de Impacto Visual y Urbano -->
+        <div class="card urban-impact-card">
+          <div class="urban-text">
+            <h3>Análisis de Vulnerabilidad Urbana & Infraestructura</h3>
+            <p id="urban-description">Cargando descripción...</p>
+            <ul class="urban-bullets" id="urban-bullets-list"></ul>
+          </div>
+          <div class="urban-image-container">
+            <div id="svg-scene" class="svg-wrapper"></div>
+            <span class="img-caption" id="img-caption">Simulación estructural</span>
+          </div>
+        </div>
+
+        <div class="chart-container">
+          <canvas id="richterChart"></canvas>
+        </div>
+
+        <p class="scale-note">
+          <strong>Nota científica:</strong> Aunque la escala visual se amplía dinámicamente para observar las transformaciones matemáticas (<em>a, h, k</em>), en la naturaleza la Escala de Richter es abierta pero tiene un límite físico práctico cercano a <strong>M = 10</strong> (ningún terremoto registrado en la historia superó 9.5, debido a la longitud máxima de las fallas tectónicas).
+        </p>
+
+        <!-- Visualizador de Onda Sísmica (Sismograma) -->
+        <div class="seismograph-box">
+          <h3>Simulación de Sismograma (Amplitud de Onda)</h3>
+          <canvas id="waveCanvas" width="600" height="100"></canvas>
+        </div>
+      </section>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
